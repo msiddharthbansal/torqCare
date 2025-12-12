@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: torqcare_db
+    environment:
+      POSTGRES_USER: torqcare_user
+      POSTGRES_PASSWORD: torqcare_pass
+      POSTGRES_DB: torqcare_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U torqcare_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - torqcare_network
+
+  # FastAPI Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ../Dockerfile.backend
+    container_name: torqcare_backend
+    environment:
+      DATABASE_URL: postgresql://torqcare_user:torqcare_pass@postgres:5432/torqcare_db
+      GROQ_API_KEY: ${GROQ_API_KEY}
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - ./ml_models:/app/ml_models
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: >
+      sh -c "
+        echo '🚀 Starting TorqCare Backend...' &&
+        python -m database.database &&
+        uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+      "
+    networks:
+      - torqcare_network
+
+  # React Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../Dockerfile.frontend
+    container_name: torqcare_frontend
+    environment:
+      VITE_API_URL: http://localhost:8000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm run dev -- --host 0.0.0.0
+    networks:
+      - torqcare_network
+
+  # pgAdmin (Optional - for database management)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: torqcare_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@torqcare.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - torqcare_network
+
+volumes:
+  postgres_data:
+
+networks:
+  torqcare_network:
+    driver: bridge

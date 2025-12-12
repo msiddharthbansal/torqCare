@@ -1,0 +1,627 @@
+# ==========================================
+# docker-compose.yml
+# Complete Docker Compose Configuration
+# ==========================================
+
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:13-alpine
+    container_name: torqcare-postgres
+    environment:
+      POSTGRES_DB: torqcare_db
+      POSTGRES_USER: torqcare_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme123}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    networks:
+      - torqcare-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U torqcare_user -d torqcare_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend FastAPI Application
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: torqcare-backend
+    environment:
+      DATABASE_URL: postgresql://torqcare_user:${POSTGRES_PASSWORD:-changeme123}@postgres:5432/torqcare_db
+      OLLAMA_BASE_URL: http://ollama:11434
+      API_HOST: 0.0.0.0
+      API_PORT: 8000
+      DEBUG: ${DEBUG:-false}
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - ml_models:/app/ml_models/trained_models
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - torqcare-network
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+  # Frontend React Application
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: torqcare-frontend
+    environment:
+      REACT_APP_API_URL: http://localhost:8000
+      REACT_APP_WS_URL: ws://localhost:8000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - torqcare-network
+    command: npm start
+
+  # Ollama for Local LLM
+  ollama:
+    image: ollama/ollama:latest
+    container_name: torqcare-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - torqcare-network
+    command: serve
+
+  # Redis for Caching (Optional)
+  redis:
+    image: redis:7-alpine
+    container_name: torqcare-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - torqcare-network
+    command: redis-server --appendonly yes
+
+  # Nginx Reverse Proxy (Production)
+  nginx:
+    image: nginx:alpine
+    container_name: torqcare-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./frontend/build:/usr/share/nginx/html:ro
+      - nginx_logs:/var/log/nginx
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - torqcare-network
+    profiles:
+      - production
+
+volumes:
+  postgres_data:
+    driver: local
+  ollama_data:
+    driver: local
+  redis_data:
+    driver: local
+  ml_models:
+    driver: local
+  nginx_logs:
+    driver: local
+
+networks:
+  torqcare-network:
+    driver: bridge
+
+---
+# ==========================================
+# backend/Dockerfile
+# Backend Docker Configuration
+# ==========================================
+
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    postgresql-client \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first for caching
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
+COPY . .
+
+# Create directories for logs and models
+RUN mkdir -p logs ml_models/trained_models
+
+# Expose port
+EXPOSE 8000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD python -c "import requests; requests.get('http://localhost:8000/')"
+
+# Run application
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+---
+# ==========================================
+# frontend/Dockerfile
+# Frontend Docker Configuration
+# ==========================================
+
+FROM node:18-alpine AS build
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+RUN npm ci --only=production
+
+# Copy source code
+COPY . .
+
+# Build for production
+RUN npm run build
+
+# Production stage
+FROM nginx:alpine
+
+# Copy built files
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Copy nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 3000
+
+CMD ["nginx", "-g", "daemon off;"]
+
+---
+# ==========================================
+# config/nginx.conf
+# Nginx Configuration
+# ==========================================
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    upstream backend {
+        server backend:8000;
+    }
+
+    upstream frontend {
+        server frontend:3000;
+    }
+
+    server {
+        listen 80;
+        server_name localhost;
+
+        # Frontend
+        location / {
+            proxy_pass http://frontend;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        # Backend API
+        location /api/ {
+            proxy_pass http://backend/api/;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        # WebSocket
+        location /ws/ {
+            proxy_pass http://backend/ws/;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_read_timeout 86400;
+        }
+
+        # API Documentation
+        location /docs {
+            proxy_pass http://backend/docs;
+            proxy_set_header Host $host;
+        }
+    }
+}
+
+---
+# ==========================================
+# .github/workflows/ci.yml
+# GitHub Actions CI/CD Pipeline
+# ==========================================
+
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_DB: torqcare_test
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_pass
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        cd backend
+        pip install -r requirements.txt
+        pip install pytest pytest-cov
+    
+    - name: Run tests
+      env:
+        DATABASE_URL: postgresql://test_user:test_pass@localhost:5432/torqcare_test
+      run: |
+        cd backend
+        pytest --cov=. --cov-report=xml
+    
+    - name: Upload coverage
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./backend/coverage.xml
+
+  test-frontend:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+    
+    - name: Install dependencies
+      run: |
+        cd frontend
+        npm ci
+    
+    - name: Run tests
+      run: |
+        cd frontend
+        npm test -- --coverage --watchAll=false
+    
+    - name: Build
+      run: |
+        cd frontend
+        npm run build
+
+  deploy:
+    needs: [test-backend, test-frontend]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Deploy to production
+      run: |
+        echo "Deploying to production..."
+        # Add your deployment commands here
+
+---
+# ==========================================
+# backend/config.py
+# Application Configuration
+# ==========================================
+
+from pydantic_settings import BaseSettings
+from typing import Optional
+
+class Settings(BaseSettings):
+    # Application
+    APP_NAME: str = "TorqCare"
+    APP_VERSION: str = "1.0.0"
+    DEBUG: bool = False
+    
+    # Database
+    DATABASE_URL: str
+    DB_POOL_SIZE: int = 20
+    DB_MAX_OVERFLOW: int = 0
+    
+    # API
+    API_HOST: str = "0.0.0.0"
+    API_PORT: int = 8000
+    API_PREFIX: str = "/api"
+    
+    # Security
+    SECRET_KEY: str
+    JWT_ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    
+    # AI/LLM
+    OPENAI_API_KEY: Optional[str] = None
+    ANTHROPIC_API_KEY: Optional[str] = None
+    OLLAMA_BASE_URL: str = "http://localhost:11434"
+    OLLAMA_MODEL: str = "llama2"
+    
+    # Email
+    SMTP_HOST: Optional[str] = None
+    SMTP_PORT: int = 587
+    SMTP_USER: Optional[str] = None
+    SMTP_PASSWORD: Optional[str] = None
+    
+    # Redis
+    REDIS_URL: Optional[str] = "redis://localhost:6379"
+    
+    # Monitoring
+    ENABLE_METRICS: bool = True
+    LOG_LEVEL: str = "INFO"
+    
+    class Config:
+        env_file = ".env"
+        case_sensitive = True
+
+settings = Settings()
+
+---
+# ==========================================
+# scripts/setup_database.sh
+# Database Setup Script
+# ==========================================
+
+#!/bin/bash
+
+echo "🚀 TorqCare Database Setup"
+echo "=========================="
+
+# Load environment variables
+source ../.env
+
+# Check if PostgreSQL is running
+if ! pg_isready -h localhost -p 5432 > /dev/null 2>&1; then
+    echo "❌ PostgreSQL is not running. Please start PostgreSQL first."
+    exit 1
+fi
+
+echo "✅ PostgreSQL is running"
+
+# Create database
+echo "📦 Creating database..."
+createdb -h localhost -U postgres $POSTGRES_DB 2>/dev/null || echo "Database already exists"
+
+# Run schema
+echo "📋 Creating tables..."
+psql -h localhost -U postgres -d $POSTGRES_DB -f ../database/schema.sql
+
+# Seed data
+echo "🌱 Seeding sample data..."
+python3 ../backend/database/connection.py
+
+echo "✅ Database setup complete!"
+echo ""
+echo "Database Details:"
+echo "  Host: localhost"
+echo "  Port: 5432"
+echo "  Database: $POSTGRES_DB"
+echo "  User: $POSTGRES_USER"
+
+---
+# ==========================================
+# scripts/train_ml_models.py
+# ML Model Training Script
+# ==========================================
+
+#!/usr/bin/env python3
+"""
+TorqCare ML Model Training Script
+Trains all predictive models with historical data
+"""
+
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'backend'))
+
+from ml_models.prediction_model import VehicleFailurePredictionModel
+from database.connection import get_db_session
+from database.models import SensorData, MaintenanceHistory
+import pandas as pd
+from datetime import datetime
+
+def load_training_data():
+    """Load historical data for training"""
+    print("📊 Loading training data...")
+    
+    db = next(get_db_session())
+    
+    # Load sensor data
+    sensor_records = db.query(SensorData).all()
+    sensor_df = pd.DataFrame([{
+        'engine_temp': r.engine_temp,
+        'rpm': r.rpm,
+        'battery_voltage': r.battery_voltage,
+        'oil_pressure': r.oil_pressure,
+        'tire_pressure_fl': r.tire_pressure_fl,
+        'tire_pressure_fr': r.tire_pressure_fr,
+        'tire_pressure_rl': r.tire_pressure_rl,
+        'tire_pressure_rr': r.tire_pressure_rr,
+        'brake_fluid_level': r.brake_fluid_level,
+        'fuel_level': r.fuel_level,
+        'speed': r.speed
+    } for r in sensor_records])
+    
+    print(f"✅ Loaded {len(sensor_df)} sensor records")
+    return sensor_df
+
+def train_models():
+    """Train all ML models"""
+    print("\n🤖 Training ML Models")
+    print("=" * 50)
+    
+    # Load data
+    data = load_training_data()
+    
+    # Initialize model
+    model = VehicleFailurePredictionModel()
+    
+    # Train models (in production, use real labeled data)
+    print("\n📈 Training failure prediction models...")
+    print("Note: Using simulated labels for demonstration")
+    
+    # Add simulated labels for training
+    for failure_type in model.failure_types:
+        data[failure_type] = 0  # Placeholder labels
+    
+    # Train
+    model.train_models(data)
+    
+    # Save models
+    print("\n💾 Saving trained models...")
+    model.save_models('backend/ml_models/trained_models/')
+    
+    print("\n✅ Model training complete!")
+    print("\nNext steps:")
+    print("1. Replace simulated labels with real failure data")
+    print("2. Tune hyperparameters for better accuracy")
+    print("3. Validate models with test set")
+    print("4. Deploy models to production")
+
+if __name__ == "__main__":
+    train_models()
+
+---
+# ==========================================
+# .gitignore
+# Git Ignore File
+# ==========================================
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment Variables
+.env
+.env.local
+.env.production
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+logs/
+
+# ML Models
+ml_models/trained_models/*.pkl
+*.h5
+*.pt
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# React
+/frontend/build
+.DS_Store
+
+# Docker
+docker-compose.override.yml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test Coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Misc
+*.bak
+*.tmp
+.cache/
