@@ -21,7 +21,7 @@ class ChatbotAgent:
         self.api_key = groq_api_key or os.getenv("GROQ_API_KEY")
         self.llm = ChatGroq(
             temperature=0.7,
-            model_name="llama-3.1-70b-versatile",
+            model_name="llama-3.1-8b-instant",
             groq_api_key=self.api_key
         )
         
