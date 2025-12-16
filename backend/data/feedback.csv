@@ -1,0 +1,151 @@
+feedback_id,maintenance_id,vehicle_id,feedback_date,rating,sentiment,comment,repair_effectiveness,service_quality,communication_rating,would_recommend
+FBK-00001,MNT-00159,EV-00001,2025-08-09 16:35:08.900439,2,Negative,"Expensive repair, not satisfied",5,1,3,False
+FBK-00002,MNT-00164,EV-00036,2025-11-21 16:35:08.900456,3,Positive,Problem fixed on first visit,2,3,4,True
+FBK-00003,MNT-00009,EV-00033,2025-10-12 16:35:08.900462,3,Negative,"Long wait time, poor communication",3,1,4,False
+FBK-00004,MNT-00016,EV-00029,2025-11-21 16:35:08.900467,2,Neutral,"Standard service, no complaints",4,4,1,False
+FBK-00005,MNT-00138,EV-00089,2025-06-25 16:35:08.900473,3,Positive,Problem fixed on first visit,5,5,3,True
+FBK-00006,MNT-00017,EV-00004,2025-12-01 16:35:08.900478,1,Neutral,"Service was okay, took longer than expected",2,4,5,False
+FBK-00007,MNT-00078,EV-00045,2025-09-07 16:35:08.900484,2,Negative,Problem not fully resolved,1,1,2,False
+FBK-00008,MNT-00072,EV-00027,2025-10-14 16:35:08.900493,1,Negative,"Long wait time, poor communication",3,5,5,False
+FBK-00009,MNT-00009,EV-00091,2025-09-11 16:35:08.900498,1,Negative,"Expensive repair, not satisfied",3,1,2,False
+FBK-00010,MNT-00032,EV-00045,2025-11-01 16:35:08.900501,2,Negative,Problem not fully resolved,1,2,5,False
+FBK-00011,MNT-00072,EV-00089,2025-09-22 16:35:08.900505,1,Negative,"Expensive repair, not satisfied",3,2,3,False
+FBK-00012,MNT-00084,EV-00016,2025-10-21 16:35:08.900508,3,Positive,Problem fixed on first visit,2,4,4,True
+FBK-00013,MNT-00165,EV-00036,2025-08-09 16:35:08.900511,3,Negative,Problem not fully resolved,4,3,3,False
+FBK-00014,MNT-00165,EV-00030,2025-09-11 16:35:08.900514,3,Negative,Issue recurred after repair,4,3,1,False
+FBK-00015,MNT-00019,EV-00085,2025-08-29 16:35:08.900517,3,Positive,"Excellent service, issue resolved quickly",4,2,5,True
+FBK-00016,MNT-00145,EV-00048,2025-07-31 16:35:08.900520,2,Negative,"Expensive repair, not satisfied",1,4,4,False
+FBK-00017,MNT-00191,EV-00098,2025-10-22 16:35:08.900523,1,Neutral,"Service was okay, took longer than expected",5,3,5,False
+FBK-00018,MNT-00085,EV-00073,2025-09-01 16:35:08.900526,2,Neutral,"Standard service, no complaints",3,4,1,False
+FBK-00019,MNT-00053,EV-00034,2025-07-23 16:35:08.900529,2,Negative,Problem not fully resolved,3,1,2,False
+FBK-00020,MNT-00185,EV-00079,2025-10-30 16:35:08.900532,4,Positive,Very satisfied with the repair quality,2,3,1,True
+FBK-00021,MNT-00069,EV-00089,2025-08-18 16:35:08.900535,3,Neutral,"Service was okay, took longer than expected",1,3,3,False
+FBK-00022,MNT-00132,EV-00020,2025-06-29 16:35:08.900538,5,Positive,"Professional technicians, great experience",2,5,2,True
+FBK-00023,MNT-00183,EV-00028,2025-07-26 16:35:08.900541,2,Neutral,"Service was okay, took longer than expected",3,5,1,False
+FBK-00024,MNT-00077,EV-00076,2025-06-21 16:35:08.900543,2,Neutral,"Service was okay, took longer than expected",1,1,4,False
+FBK-00025,MNT-00018,EV-00090,2025-06-19 16:35:08.900546,5,Positive,Problem fixed on first visit,1,3,2,True
+FBK-00026,MNT-00015,EV-00053,2025-11-01 16:35:08.900549,5,Positive,"Professional technicians, great experience",3,4,4,True
+FBK-00027,MNT-00192,EV-00082,2025-06-19 16:35:08.900552,2,Negative,Issue recurred after repair,2,1,3,False
+FBK-00028,MNT-00177,EV-00003,2025-08-20 16:35:08.900555,2,Negative,Issue recurred after repair,3,1,3,False
+FBK-00029,MNT-00054,EV-00087,2025-11-16 16:35:08.900557,3,Neutral,"Standard service, no complaints",2,3,2,False
+FBK-00030,MNT-00020,EV-00052,2025-07-31 16:35:08.900560,3,Positive,Problem fixed on first visit,4,2,1,True
+FBK-00031,MNT-00035,EV-00044,2025-09-21 16:35:08.900563,2,Neutral,"Standard service, no complaints",3,2,4,False
+FBK-00032,MNT-00068,EV-00065,2025-08-13 16:35:08.900565,4,Positive,"Excellent service, issue resolved quickly",3,1,4,True
+FBK-00033,MNT-00084,EV-00005,2025-08-01 16:35:08.900568,2,Neutral,"Average experience, issue resolved",3,5,3,False
+FBK-00034,MNT-00087,EV-00067,2025-09-20 16:35:08.900572,4,Positive,Problem fixed on first visit,4,2,4,True
+FBK-00035,MNT-00034,EV-00057,2025-09-23 16:35:08.900575,3,Negative,"Expensive repair, not satisfied",5,4,5,False
+FBK-00036,MNT-00080,EV-00093,2025-09-06 16:35:08.900578,5,Positive,"Excellent service, issue resolved quickly",4,4,5,True
+FBK-00037,MNT-00029,EV-00066,2025-10-27 16:35:08.900580,4,Positive,"Professional technicians, great experience",1,5,5,True
+FBK-00038,MNT-00192,EV-00027,2025-07-30 16:35:08.900583,3,Negative,"Expensive repair, not satisfied",1,1,2,False
+FBK-00039,MNT-00035,EV-00042,2025-10-08 16:35:08.900586,1,Neutral,"Average experience, issue resolved",3,5,3,False
+FBK-00040,MNT-00036,EV-00047,2025-08-21 16:35:08.900589,3,Positive,"Excellent service, issue resolved quickly",5,1,4,True
+FBK-00041,MNT-00148,EV-00096,2025-06-20 16:35:08.900592,2,Neutral,"Service was okay, took longer than expected",4,2,2,False
+FBK-00042,MNT-00146,EV-00021,2025-06-23 16:35:08.900595,3,Negative,"Long wait time, poor communication",3,5,3,False
+FBK-00043,MNT-00181,EV-00025,2025-07-21 16:35:08.900598,1,Negative,"Long wait time, poor communication",5,4,3,False
+FBK-00044,MNT-00021,EV-00012,2025-07-21 16:35:08.900601,4,Positive,"Excellent service, issue resolved quickly",4,1,4,True
+FBK-00045,MNT-00108,EV-00035,2025-07-23 16:35:08.900604,3,Positive,Problem fixed on first visit,4,4,1,True
+FBK-00046,MNT-00024,EV-00048,2025-09-24 16:35:08.900607,4,Positive,"Excellent service, issue resolved quickly",2,5,4,True
+FBK-00047,MNT-00060,EV-00033,2025-10-27 16:35:08.900610,5,Positive,Problem fixed on first visit,3,3,3,True
+FBK-00048,MNT-00101,EV-00090,2025-09-28 16:35:08.900613,5,Positive,"Professional technicians, great experience",1,5,3,True
+FBK-00049,MNT-00031,EV-00052,2025-07-28 16:35:08.900616,2,Neutral,"Service was okay, took longer than expected",2,1,5,False
+FBK-00050,MNT-00186,EV-00084,2025-07-29 16:35:08.900619,3,Positive,"Professional technicians, great experience",4,4,4,True
+FBK-00051,MNT-00113,EV-00073,2025-08-29 16:35:08.900622,2,Neutral,"Service was okay, took longer than expected",5,3,1,False
+FBK-00052,MNT-00134,EV-00015,2025-06-27 16:35:08.900625,3,Negative,Problem not fully resolved,3,1,3,False
+FBK-00053,MNT-00013,EV-00022,2025-07-13 16:35:08.900628,4,Positive,"Excellent service, issue resolved quickly",4,1,5,True
+FBK-00054,MNT-00013,EV-00077,2025-07-08 16:35:08.900631,3,Negative,"Long wait time, poor communication",4,3,4,False
+FBK-00055,MNT-00113,EV-00019,2025-10-16 16:35:08.900634,3,Negative,"Long wait time, poor communication",3,1,4,False
+FBK-00056,MNT-00153,EV-00085,2025-12-07 16:35:08.900637,2,Neutral,"Service was okay, took longer than expected",1,2,5,False
+FBK-00057,MNT-00061,EV-00027,2025-06-26 16:35:08.900640,2,Negative,"Long wait time, poor communication",3,3,4,False
+FBK-00058,MNT-00120,EV-00021,2025-08-16 16:35:08.900643,3,Negative,"Long wait time, poor communication",2,4,3,False
+FBK-00059,MNT-00186,EV-00092,2025-07-05 16:35:08.900646,1,Neutral,"Service was okay, took longer than expected",3,2,5,False
+FBK-00060,MNT-00117,EV-00078,2025-09-23 16:35:08.900648,1,Negative,"Expensive repair, not satisfied",5,5,4,False
+FBK-00061,MNT-00053,EV-00013,2025-10-16 16:35:08.900651,5,Positive,Very satisfied with the repair quality,3,1,2,True
+FBK-00062,MNT-00144,EV-00011,2025-11-14 16:35:08.900654,3,Neutral,"Standard service, no complaints",3,3,2,False
+FBK-00063,MNT-00066,EV-00084,2025-12-11 16:35:08.900657,3,Neutral,"Service was okay, took longer than expected",1,3,1,False
+FBK-00064,MNT-00132,EV-00016,2025-11-26 16:35:08.900660,3,Neutral,"Service was okay, took longer than expected",1,3,1,False
+FBK-00065,MNT-00148,EV-00075,2025-09-04 16:35:08.900662,1,Neutral,"Standard service, no complaints",4,2,5,False
+FBK-00066,MNT-00037,EV-00063,2025-08-22 16:35:08.900665,4,Positive,Very satisfied with the repair quality,5,3,2,True
+FBK-00067,MNT-00183,EV-00073,2025-10-05 16:35:08.900668,3,Negative,Problem not fully resolved,2,5,5,False
+FBK-00068,MNT-00050,EV-00041,2025-07-05 16:35:08.900671,2,Negative,Problem not fully resolved,3,2,1,False
+FBK-00069,MNT-00033,EV-00035,2025-07-19 16:35:08.900674,3,Neutral,"Standard service, no complaints",3,4,2,False
+FBK-00070,MNT-00134,EV-00046,2025-10-09 16:35:08.900677,4,Positive,"Professional technicians, great experience",3,3,4,True
+FBK-00071,MNT-00160,EV-00026,2025-08-15 16:35:08.900679,3,Negative,Issue recurred after repair,2,3,5,False
+FBK-00072,MNT-00152,EV-00046,2025-07-26 16:35:08.900682,3,Positive,Problem fixed on first visit,4,1,4,True
+FBK-00073,MNT-00118,EV-00097,2025-08-31 16:35:08.900685,2,Negative,Problem not fully resolved,4,3,5,False
+FBK-00074,MNT-00068,EV-00070,2025-07-28 16:35:08.900688,2,Negative,Issue recurred after repair,5,3,1,False
+FBK-00075,MNT-00005,EV-00087,2025-11-12 16:35:08.900691,2,Neutral,"Standard service, no complaints",1,3,2,False
+FBK-00076,MNT-00150,EV-00074,2025-09-26 16:35:08.900693,2,Neutral,"Service was okay, took longer than expected",3,1,2,False
+FBK-00077,MNT-00160,EV-00043,2025-08-24 16:35:08.900696,5,Positive,"Excellent service, issue resolved quickly",2,4,2,True
+FBK-00078,MNT-00177,EV-00056,2025-09-15 16:35:08.900700,3,Neutral,"Average experience, issue resolved",4,1,5,False
+FBK-00079,MNT-00146,EV-00031,2025-10-02 16:35:08.900703,3,Neutral,"Service was okay, took longer than expected",5,3,1,False
+FBK-00080,MNT-00169,EV-00061,2025-09-05 16:35:08.900706,3,Negative,"Expensive repair, not satisfied",1,1,1,False
+FBK-00081,MNT-00111,EV-00082,2025-10-03 16:35:08.900709,1,Neutral,"Service was okay, took longer than expected",2,1,3,False
+FBK-00082,MNT-00157,EV-00090,2025-10-27 16:35:08.900712,2,Negative,Problem not fully resolved,5,2,2,False
+FBK-00083,MNT-00068,EV-00004,2025-10-11 16:35:08.900714,3,Negative,Issue recurred after repair,2,1,5,False
+FBK-00084,MNT-00150,EV-00044,2025-07-04 16:35:08.900717,4,Positive,Very satisfied with the repair quality,1,1,3,True
+FBK-00085,MNT-00187,EV-00059,2025-06-27 16:35:08.900720,5,Positive,"Professional technicians, great experience",1,1,2,True
+FBK-00086,MNT-00085,EV-00050,2025-11-07 16:35:08.900723,1,Negative,Problem not fully resolved,3,5,2,False
+FBK-00087,MNT-00155,EV-00037,2025-08-31 16:35:08.900726,3,Neutral,"Service was okay, took longer than expected",1,3,3,False
+FBK-00088,MNT-00107,EV-00067,2025-07-09 16:35:08.900729,3,Negative,"Expensive repair, not satisfied",1,3,3,False
+FBK-00089,MNT-00199,EV-00018,2025-11-25 16:35:08.900732,3,Positive,"Excellent service, issue resolved quickly",3,1,3,True
+FBK-00090,MNT-00086,EV-00061,2025-10-19 16:35:08.900735,1,Negative,"Expensive repair, not satisfied",4,5,2,False
+FBK-00091,MNT-00032,EV-00021,2025-07-28 16:35:08.900737,1,Negative,Issue recurred after repair,2,3,4,False
+FBK-00092,MNT-00030,EV-00045,2025-10-09 16:35:08.900740,1,Negative,"Long wait time, poor communication",5,4,2,False
+FBK-00093,MNT-00139,EV-00023,2025-07-21 16:35:08.900743,1,Negative,Issue recurred after repair,4,5,2,False
+FBK-00094,MNT-00028,EV-00044,2025-09-29 16:35:08.900746,3,Neutral,"Standard service, no complaints",4,2,2,False
+FBK-00095,MNT-00182,EV-00011,2025-08-14 16:35:08.900749,1,Neutral,"Service was okay, took longer than expected",4,4,5,False
+FBK-00096,MNT-00194,EV-00090,2025-10-28 16:35:08.900752,1,Negative,"Expensive repair, not satisfied",1,4,4,False
+FBK-00097,MNT-00145,EV-00068,2025-07-17 16:35:08.900755,2,Neutral,"Service was okay, took longer than expected",5,5,4,False
+FBK-00098,MNT-00185,EV-00096,2025-08-19 16:35:08.900758,3,Negative,"Expensive repair, not satisfied",4,5,4,False
+FBK-00099,MNT-00089,EV-00071,2025-10-29 16:35:08.900761,5,Positive,"Professional technicians, great experience",2,1,3,True
+FBK-00100,MNT-00126,EV-00048,2025-09-03 16:35:08.900764,5,Positive,"Excellent service, issue resolved quickly",5,5,5,True
+FBK-00101,MNT-00109,EV-00042,2025-07-12 16:35:08.900767,3,Positive,"Excellent service, issue resolved quickly",1,5,4,True
+FBK-00102,MNT-00050,EV-00021,2025-09-04 16:35:08.900769,3,Neutral,"Average experience, issue resolved",3,4,3,False
+FBK-00103,MNT-00173,EV-00081,2025-08-07 16:35:08.900772,3,Negative,Issue recurred after repair,2,2,2,False
+FBK-00104,MNT-00013,EV-00097,2025-09-10 16:35:08.900775,3,Positive,"Professional technicians, great experience",1,5,3,True
+FBK-00105,MNT-00031,EV-00097,2025-09-06 16:35:08.900778,3,Negative,Issue recurred after repair,3,4,4,False
+FBK-00106,MNT-00109,EV-00062,2025-07-27 16:35:08.900781,3,Positive,Very satisfied with the repair quality,5,1,1,True
+FBK-00107,MNT-00018,EV-00034,2025-10-16 16:35:08.900784,5,Positive,Problem fixed on first visit,3,3,4,True
+FBK-00108,MNT-00029,EV-00064,2025-09-26 16:35:08.900786,3,Negative,Problem not fully resolved,3,5,5,False
+FBK-00109,MNT-00109,EV-00028,2025-07-18 16:35:08.900789,3,Neutral,"Standard service, no complaints",2,3,3,False
+FBK-00110,MNT-00186,EV-00099,2025-07-29 16:35:08.900793,2,Neutral,"Average experience, issue resolved",4,4,2,False
+FBK-00111,MNT-00121,EV-00005,2025-07-19 16:35:08.900796,2,Neutral,"Average experience, issue resolved",2,4,4,False
+FBK-00112,MNT-00050,EV-00091,2025-10-24 16:35:08.900798,2,Neutral,"Standard service, no complaints",1,2,3,False
+FBK-00113,MNT-00100,EV-00073,2025-08-21 16:35:08.900801,2,Neutral,"Average experience, issue resolved",4,2,1,False
+FBK-00114,MNT-00165,EV-00001,2025-12-07 16:35:08.900804,5,Positive,Problem fixed on first visit,5,1,3,True
+FBK-00115,MNT-00058,EV-00048,2025-06-20 16:35:08.900806,2,Neutral,"Service was okay, took longer than expected",4,3,2,False
+FBK-00116,MNT-00108,EV-00027,2025-11-28 16:35:08.900809,1,Neutral,"Standard service, no complaints",4,1,5,False
+FBK-00117,MNT-00079,EV-00079,2025-08-19 16:35:08.900812,2,Negative,Issue recurred after repair,5,5,1,False
+FBK-00118,MNT-00096,EV-00092,2025-10-06 16:35:08.900815,5,Positive,"Professional technicians, great experience",1,4,3,True
+FBK-00119,MNT-00007,EV-00080,2025-10-07 16:35:08.900817,1,Neutral,"Average experience, issue resolved",1,5,1,False
+FBK-00120,MNT-00014,EV-00002,2025-07-17 16:35:08.900820,1,Neutral,"Service was okay, took longer than expected",3,3,2,False
+FBK-00121,MNT-00190,EV-00086,2025-10-07 16:35:08.900823,1,Neutral,"Standard service, no complaints",3,3,5,False
+FBK-00122,MNT-00061,EV-00064,2025-09-24 16:35:08.900825,3,Negative,"Expensive repair, not satisfied",3,2,3,False
+FBK-00123,MNT-00026,EV-00050,2025-08-07 16:35:08.900828,3,Positive,"Professional technicians, great experience",3,1,3,True
+FBK-00124,MNT-00189,EV-00095,2025-11-13 16:35:08.900831,1,Negative,Issue recurred after repair,5,3,1,False
+FBK-00125,MNT-00140,EV-00017,2025-07-14 16:35:08.900835,3,Neutral,"Standard service, no complaints",5,3,2,False
+FBK-00126,MNT-00195,EV-00041,2025-09-07 16:35:08.900837,3,Positive,"Excellent service, issue resolved quickly",2,3,2,True
+FBK-00127,MNT-00002,EV-00052,2025-11-11 16:35:08.900841,2,Negative,"Long wait time, poor communication",1,3,1,False
+FBK-00128,MNT-00160,EV-00077,2025-10-06 16:35:08.900845,4,Positive,"Professional technicians, great experience",2,5,3,True
+FBK-00129,MNT-00099,EV-00077,2025-09-21 16:35:08.900848,5,Positive,Problem fixed on first visit,3,5,5,True
+FBK-00130,MNT-00050,EV-00085,2025-06-15 16:35:08.900851,1,Negative,"Expensive repair, not satisfied",4,1,4,False
+FBK-00131,MNT-00122,EV-00017,2025-11-05 16:35:08.900854,1,Negative,Problem not fully resolved,5,1,2,False
+FBK-00132,MNT-00117,EV-00038,2025-09-05 16:35:08.900857,2,Neutral,"Average experience, issue resolved",1,2,2,False
+FBK-00133,MNT-00102,EV-00092,2025-07-25 16:35:08.900860,5,Positive,Problem fixed on first visit,1,4,3,True
+FBK-00134,MNT-00086,EV-00010,2025-08-05 16:35:08.900862,3,Negative,"Expensive repair, not satisfied",3,4,1,False
+FBK-00135,MNT-00179,EV-00086,2025-08-14 16:35:08.900865,2,Neutral,"Standard service, no complaints",1,4,1,False
+FBK-00136,MNT-00093,EV-00069,2025-12-08 16:35:08.900868,3,Negative,"Long wait time, poor communication",4,4,3,False
+FBK-00137,MNT-00148,EV-00046,2025-10-11 16:35:08.900871,2,Negative,Issue recurred after repair,1,2,1,False
+FBK-00138,MNT-00030,EV-00029,2025-07-25 16:35:08.900874,2,Negative,Problem not fully resolved,3,5,3,False
+FBK-00139,MNT-00141,EV-00005,2025-12-11 16:35:08.900877,4,Positive,"Professional technicians, great experience",3,4,5,True
+FBK-00140,MNT-00191,EV-00086,2025-10-30 16:35:08.900879,3,Neutral,"Standard service, no complaints",5,5,4,False
+FBK-00141,MNT-00114,EV-00061,2025-10-16 16:35:08.900882,4,Positive,"Excellent service, issue resolved quickly",3,4,1,True
+FBK-00142,MNT-00102,EV-00066,2025-10-09 16:35:08.900885,5,Positive,Problem fixed on first visit,4,1,2,True
+FBK-00143,MNT-00043,EV-00024,2025-09-05 16:35:08.900888,4,Positive,Problem fixed on first visit,2,2,2,True
+FBK-00144,MNT-00107,EV-00083,2025-08-07 16:35:08.900891,3,Positive,Very satisfied with the repair quality,1,5,2,True
+FBK-00145,MNT-00042,EV-00023,2025-09-16 16:35:08.900893,1,Negative,Problem not fully resolved,3,5,2,False
+FBK-00146,MNT-00181,EV-00089,2025-09-02 16:35:08.900896,3,Neutral,"Average experience, issue resolved",3,5,4,False
+FBK-00147,MNT-00091,EV-00035,2025-10-18 16:35:08.900899,1,Negative,"Long wait time, poor communication",5,5,2,False
+FBK-00148,MNT-00099,EV-00087,2025-09-01 16:35:08.900902,3,Negative,Issue recurred after repair,3,4,2,False
+FBK-00149,MNT-00133,EV-00026,2025-10-05 16:35:08.900905,4,Positive,Problem fixed on first visit,1,4,1,True
+FBK-00150,MNT-00167,EV-00005,2025-12-11 16:35:08.900908,3,Neutral,"Standard service, no complaints",4,3,3,False

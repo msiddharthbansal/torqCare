@@ -4,9 +4,9 @@ Answers questions about real-time telemetry and product information
 """
 
 from langchain_groq import ChatGroq
-from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain.schema import HumanMessage, SystemMessage, AIMessage
-from langchain.memory import ConversationBufferMemory
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
+from langchain_classic.memory import ConversationBufferMemory
 from typing import Dict, List, Optional
 from datetime import datetime
 import os

@@ -2,9 +2,9 @@
 SQLAlchemy ORM Models for TorqCare Database
 """
 
-from sqlalchemy import Column, String, Integer, Float, DateTime, Boolean, Text, ForeignKey, JSON
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, String, Integer, Float, DateTime, Boolean, Text, ForeignKey, JSON # pyright: ignore[reportMissingImports]
+from sqlalchemy.ext.declarative import declarative_base # pyright: ignore[reportMissingImports]
+from sqlalchemy.orm import relationship # pyright: ignore[reportMissingImports]
 from datetime import datetime
 
 Base = declarative_base()

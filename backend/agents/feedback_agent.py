@@ -1,6 +1,6 @@
 from langchain_groq import ChatGroq
-from langchain.prompts import ChatPromptTemplate
-from langchain.schema import HumanMessage, SystemMessage
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.messages import HumanMessage, SystemMessage
 from typing import Dict, List, Optional
 from datetime import datetime
 from collections import Counter

@@ -4,8 +4,8 @@ Analyzes real-time sensor data and detects anomalies
 """
 
 from langchain_groq import ChatGroq
-from langchain.prompts import ChatPromptTemplate
-from langchain.schema import HumanMessage, SystemMessage
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.messages import HumanMessage, SystemMessage
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
@@ -237,25 +237,29 @@ class DataAnalysisAgent:
             return f"Analysis: Vehicle {analysis['vehicle_id']} - {analysis['status']}. {len(analysis['anomalies'])} anomalies detected."
     
     def get_vehicle_health_summary(self, readings: List[Dict]) -> Dict:
-        """
-        Generate comprehensive health summary for a vehicle
-        """
         if not readings:
             return {'status': 'no_data'}
         
         latest = readings[-1]
         
-        # Calculate component-wise health scores
-        battery_health = min(100, (latest['soh'] + latest['soc']) / 2)
-        motor_health = max(0, 100 - (latest['motor_temp'] / 100 * 50 + latest['motor_vibration'] * 20))
-        brake_health = min(100, (latest['brake_pad_wear'] / 12 * 100 + latest['regen_efficiency']))  / 2
-        tire_health = min(100, min([latest['tire_pressure_fl'], latest['tire_pressure_fr'], 
-                                    latest['tire_pressure_rl'], latest['tire_pressure_rr']]) / 35 * 100)
+        battery_health = min(100, (latest.get('soh', 0) + latest.get('soc', 0)) / 2)
+        motor_health = max(0, 100 - (latest.get('motor_temp', 0) / 100 * 50 + latest.get('motor_vibration', 0) * 20))
+        
+        brake_pad_wear = latest.get('brake_pad_wear', 0)
+        regen_efficiency = latest.get('regen_efficiency', 0)
+        brake_health = min(100, (brake_pad_wear / 12 * 100 + regen_efficiency)) / 2
+        
+        tire_health = min(100, min([
+            latest.get('tire_pressure_fl', 0), 
+            latest.get('tire_pressure_fr', 0), 
+            latest.get('tire_pressure_rl', 0), 
+            latest.get('tire_pressure_rr', 0)
+        ]) / 35 * 100)
         
         overall_health = (battery_health + motor_health + brake_health + tire_health) / 4
         
         return {
-            'vehicle_id': latest['vehicle_id'],
+            'vehicle_id': latest.get('vehicle_id', 'UNKNOWN'),
             'overall_health': round(overall_health, 2),
             'component_health': {
                 'battery': round(battery_health, 2),
@@ -266,9 +270,10 @@ class DataAnalysisAgent:
             'last_updated': latest.get('timestamp', datetime.now().isoformat()),
             'distance_traveled': latest.get('distance_traveled', 0),
             'status': 'Excellent' if overall_health > 90 else 
-                     'Good' if overall_health > 75 else
-                     'Fair' if overall_health > 60 else 'Poor'
+                    'Good' if overall_health > 75 else
+                    'Fair' if overall_health > 60 else 'Poor'
         }
+
     
     def detect_pattern_anomalies(self, readings: List[Dict]) -> List[Dict]:
         """

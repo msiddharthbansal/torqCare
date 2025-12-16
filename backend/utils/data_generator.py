@@ -1,15 +1,9 @@
-"""
-TorqCare Data Generator
-Generates realistic mock data for 100 electric vehicles with 20 failure scenarios
-"""
-
-import pandas as pd
+import pandas as pd # pyright: ignore[reportMissingImports]
 import numpy as np
 from datetime import datetime, timedelta
 import random
 import os
 
-# Set random seed for reproducibility
 np.random.seed(42)
 random.seed(42)
 
@@ -19,7 +13,6 @@ class TorqCareDataGenerator:
         self.readings_per_vehicle = readings_per_vehicle
         self.vehicle_ids = [f"EV-{str(i).zfill(5)}" for i in range(1, num_vehicles + 1)]
         
-        # Failure scenarios with component and symptoms
         self.failure_scenarios = [
             {"id": 1, "component": "Battery", "issue": "Rapid SoH Degradation", "symptoms": ["low_soh", "high_temp"]},
             {"id": 2, "component": "Battery", "issue": "Cell Imbalance", "symptoms": ["voltage_variance", "low_soc"]},
@@ -44,12 +37,10 @@ class TorqCareDataGenerator:
         ]
     
     def generate_sensor_data(self):
-        """Generate sensor telemetry data with injected failures"""
-        print("Generating sensor data...")
+        # print("Generating sensor data...")
         data = []
         
         for vehicle_id in self.vehicle_ids:
-            # Decide if this vehicle will have failures (30% chance)
             has_failure = random.random() < 0.3
             failure_scenario = random.choice(self.failure_scenarios) if has_failure else None
             failure_start_idx = random.randint(600, 900) if has_failure else None
@@ -59,7 +50,6 @@ class TorqCareDataGenerator:
             for i in range(self.readings_per_vehicle):
                 timestamp = base_timestamp + timedelta(seconds=i*10)
                 
-                # Base normal readings
                 reading = {
                     "vehicle_id": vehicle_id,
                     "timestamp": timestamp,
@@ -92,7 +82,6 @@ class TorqCareDataGenerator:
                     "route_roughness": np.random.choice([0, 1, 2, 3], p=[0.5, 0.3, 0.15, 0.05])
                 }
                 
-                # Inject failure symptoms
                 if has_failure and i >= failure_start_idx:
                     intensity = min((i - failure_start_idx) / 100, 1.0)  # Gradual degradation
                     
@@ -140,7 +129,6 @@ class TorqCareDataGenerator:
                         if "motor_temp_rise" in failure_scenario["symptoms"]:
                             reading["motor_temp"] = reading["motor_temp"] + intensity * 35
                 
-                # Calculate derived metrics
                 reading["failure_probability"] = 1 if (has_failure and i >= failure_start_idx + 50) else 0
                 reading["component_health_score"] = max(0.3, 1.0 - intensity) if has_failure and i >= failure_start_idx else random.uniform(0.85, 1.0)
                 reading["estimated_rul_hours"] = max(10, 1000 - (intensity * 900)) if has_failure and i >= failure_start_idx else random.randint(500, 2000)
@@ -151,8 +139,7 @@ class TorqCareDataGenerator:
         return df
     
     def generate_maintenance_history(self):
-        """Generate maintenance history for 200 past events"""
-        print("Generating maintenance history...")
+        # print("Generating maintenance history...")
         data = []
         
         for i in range(200):
@@ -186,8 +173,7 @@ class TorqCareDataGenerator:
         return df.sort_values("detection_date")
     
     def generate_appointments(self):
-        """Generate appointment data"""
-        print("Generating appointments...")
+        # print("Generating appointments...")
         data = []
         
         for i in range(50):
@@ -212,8 +198,7 @@ class TorqCareDataGenerator:
         return df
     
     def generate_feedback(self):
-        """Generate feedback data"""
-        print("Generating feedback...")
+        # print("Generating feedback...")
         data = []
         
         sentiments = ["Positive", "Neutral", "Negative"]
@@ -259,7 +244,6 @@ class TorqCareDataGenerator:
         return df
     
     def generate_workshops(self):
-        """Generate workshop/service center data"""
         print("Generating workshop data...")
         data = []
         
@@ -295,30 +279,29 @@ class TorqCareDataGenerator:
         return df
     
     def save_all_data(self, output_dir="backend/data"):
-        """Generate and save all datasets"""
         os.makedirs(output_dir, exist_ok=True)
         
         sensor_df = self.generate_sensor_data()
         sensor_df.to_csv(f"{output_dir}/sensor_data.csv", index=False)
-        print(f"✓ Saved sensor_data.csv ({len(sensor_df)} records)")
+        print(f"Saved sensor_data.csv ({len(sensor_df)} records)")
         
         maintenance_df = self.generate_maintenance_history()
         maintenance_df.to_csv(f"{output_dir}/maintenance_history.csv", index=False)
-        print(f"✓ Saved maintenance_history.csv ({len(maintenance_df)} records)")
+        print(f"Saved maintenance_history.csv ({len(maintenance_df)} records)")
         
         appointments_df = self.generate_appointments()
         appointments_df.to_csv(f"{output_dir}/appointments.csv", index=False)
-        print(f"✓ Saved appointments.csv ({len(appointments_df)} records)")
+        print(f"Saved appointments.csv ({len(appointments_df)} records)")
         
         feedback_df = self.generate_feedback()
         feedback_df.to_csv(f"{output_dir}/feedback.csv", index=False)
-        print(f"✓ Saved feedback.csv ({len(feedback_df)} records)")
+        print(f"Saved feedback.csv ({len(feedback_df)} records)")
         
         workshops_df = self.generate_workshops()
         workshops_df.to_csv(f"{output_dir}/workshops.csv", index=False)
-        print(f"✓ Saved workshops.csv ({len(workshops_df)} records)")
+        print(f"Saved workshops.csv ({len(workshops_df)} records)")
         
-        print(f"\n✅ All data generated successfully in {output_dir}/")
+        print(f"\nAll data generated successfully in {output_dir}/")
         return {
             "sensor": sensor_df,
             "maintenance": maintenance_df,

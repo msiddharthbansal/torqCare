@@ -4,8 +4,8 @@ Identifies failing components and estimates time to failure
 """
 
 from langchain_groq import ChatGroq
-from langchain.prompts import ChatPromptTemplate
-from langchain.schema import HumanMessage, SystemMessage
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.messages import HumanMessage, SystemMessage
 import sys
 sys.path.append('..')
 from models.predictive_models import VehicleFailurePredictor

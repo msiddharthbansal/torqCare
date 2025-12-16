@@ -1,7 +1,4 @@
-version: '3.8'
-
 services:
-  # PostgreSQL Database
   postgres:
     image: postgres:15-alpine
     container_name: torqcare_db
@@ -25,8 +22,8 @@ services:
   # FastAPI Backend
   backend:
     build:
-      context: ./backend
-      dockerfile: ../Dockerfile.backend
+      context: .
+      dockerfile: Dockerfile.backend
     container_name: torqcare_backend
     environment:
       DATABASE_URL: postgresql://torqcare_user:torqcare_pass@postgres:5432/torqcare_db
@@ -52,17 +49,18 @@ services:
   # React Frontend
   frontend:
     build:
-      context: ./frontend
-      dockerfile: ../Dockerfile.frontend
+      context: .
+      dockerfile: Dockerfile.frontend
     container_name: torqcare_frontend
     environment:
       VITE_API_URL: http://localhost:8000
     ports:
-      - "3000:3000"
+      - "3000:80"
+    depends_on:
+      - backend
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    command: npm run dev -- --host 0.0.0.0
     networks:
       - torqcare_network
 

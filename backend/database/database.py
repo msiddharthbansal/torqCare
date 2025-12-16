@@ -1,10 +1,6 @@
-"""
-Database configuration and session management
-"""
-
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
-from contextlib import contextmanager
+from sqlalchemy import create_engine  # pyright: ignore[reportMissingImports]
+from sqlalchemy.orm import sessionmaker, Session # pyright: ignore[reportMissingImports]
+from contextlib import contextmanager 
 import os
 from dotenv import load_dotenv
 
@@ -52,14 +48,14 @@ def get_db_context():
 
 def init_db():
     """Initialize database tables"""
-    from .models import Base
+    from database.models import Base
     Base.metadata.create_all(bind=engine)
     print("✓ Database tables created successfully")
 
 def load_csv_data_to_db():
     """Load CSV data into PostgreSQL database"""
-    import pandas as pd
-    from .models import (
+    import pandas as pd # pyright: ignore[reportMissingImports]
+    from database.models import (
         Vehicle, SensorReading, MaintenanceRecord, 
         Appointment, Workshop, Feedback
     )
@@ -70,7 +66,7 @@ def load_csv_data_to_db():
     with get_db_context() as db:
         # Load Workshops
         print("Loading workshops...")
-        workshops_df = pd.read_csv("backend/data/workshops.csv")
+        workshops_df = pd.read_csv("data/workshops.csv")
         for _, row in workshops_df.iterrows():
             workshop = Workshop(
                 workshop_id=row['workshop_id'],
@@ -90,7 +86,7 @@ def load_csv_data_to_db():
         
         # Load Vehicles
         print("Loading vehicles...")
-        sensor_df = pd.read_csv("backend/data/sensor_data.csv")
+        sensor_df = pd.read_csv("data/sensor_data.csv")
         vehicle_ids = sensor_df['vehicle_id'].unique()
         
         for i, vehicle_id in enumerate(vehicle_ids):
@@ -155,7 +151,7 @@ def load_csv_data_to_db():
         
         # Load Maintenance Records
         print("Loading maintenance records...")
-        maintenance_df = pd.read_csv("backend/data/maintenance_history.csv")
+        maintenance_df = pd.read_csv("data/maintenance_history.csv")
         for _, row in maintenance_df.iterrows():
             record = MaintenanceRecord(
                 maintenance_id=row['maintenance_id'],
@@ -182,7 +178,7 @@ def load_csv_data_to_db():
         
         # Load Appointments
         print("Loading appointments...")
-        appointments_df = pd.read_csv("backend/data/appointments.csv")
+        appointments_df = pd.read_csv("data/appointments.csv")
         for _, row in appointments_df.iterrows():
             appointment = Appointment(
                 appointment_id=row['appointment_id'],
@@ -202,7 +198,7 @@ def load_csv_data_to_db():
         
         # Load Feedback
         print("Loading feedback...")
-        feedback_df = pd.read_csv("backend/data/feedback.csv")
+        feedback_df = pd.read_csv("data/feedback.csv")
         for _, row in feedback_df.iterrows():
             feedback = Feedback(
                 feedback_id=row['feedback_id'],

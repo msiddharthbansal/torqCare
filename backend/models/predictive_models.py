@@ -16,7 +16,6 @@ import os
 from datetime import datetime
 
 class VehicleFailurePredictor:
-    """Predicts vehicle failures and identifies failing components"""
     
     def __init__(self):
         self.failure_classifier = None
